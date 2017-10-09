@@ -18,8 +18,7 @@ import java.util.List;
 
 public class MainActivity extends Activity {
 
-    private Paint rectPaint = new Paint();
-    private Paint rectBGPaint = new Paint(); // canvas background
+    private RectangleDraw rectangleDraw;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +27,7 @@ public class MainActivity extends Activity {
 
         RelativeLayout frame = findViewById(R.id.view_frame);
 
-        final RectangleDraw rectangleDraw = new RectangleDraw(getApplicationContext());
+        rectangleDraw = new RectangleDraw(getApplicationContext());
         frame.addView(rectangleDraw);
 
         RadioButton redButton = findViewById(R.id.radio_red);
@@ -58,13 +57,13 @@ public class MainActivity extends Activity {
             // find which button was clicked
             switch (view.getId()) {
                 case R.id.radio_red:
-                    rectPaint.setColor(0x80ff0000); // Alpha, R, G, B
+                    rectangleDraw.rectPaint.setColor(0x80ff0000); // Alpha, R, G, B
                     break;
                 case R.id.radio_blue:
-                    rectPaint.setColor(0x800000ff);
+                    rectangleDraw.rectPaint.setColor(0x800000ff);
                     break;
                 case R.id.radio_green:
-                    rectPaint.setColor(0x8000ff00);
+                    rectangleDraw.rectPaint.setColor(0x8000ff00);
                     break;
             }
         }
@@ -74,6 +73,8 @@ public class MainActivity extends Activity {
 
         private MyRectangle currentRect;
         private List<MyRectangle> rectangles = new ArrayList<>();
+        private Paint rectPaint = new Paint();
+        private Paint rectBGPaint = new Paint(); // canvas background
 
         public RectangleDraw(Context context) {
             super(context, null);
@@ -83,7 +84,9 @@ public class MainActivity extends Activity {
 
         @Override
         protected void onDraw(Canvas canvas) {
+            
             canvas.drawPaint(rectBGPaint);
+
             for (MyRectangle box : rectangles) {
                 float left = Math.min(box.getOrigin().x, box.getCurrent().x);
                 float right = Math.max(box.getOrigin().x, box.getCurrent().x);
